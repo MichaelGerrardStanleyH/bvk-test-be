@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("organizations")
 public class OrganizationController {
@@ -19,8 +21,10 @@ public class OrganizationController {
 
     @GetMapping
     public ResponseEntity<?> getAllOrganization(){
+        List<OrganizationResponseDTO> organizationResponseDTOS = TransactionMapper.mapEntityListToDtoList(this.organizationService.get(), OrganizationResponseDTO.class);
+
         return ResponseEntity.status(HttpStatus.OK).body(
-                TransactionMapper.mapEntityListToDtoList(this.organizationService.get(), OrganizationResponseDTO.class)
+               organizationResponseDTOS
         );
     }
 

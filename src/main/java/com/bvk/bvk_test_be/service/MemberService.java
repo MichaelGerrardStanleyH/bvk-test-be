@@ -25,13 +25,14 @@ public class MemberService {
     }
 
     public Member create(MemberRequestDTO dto){
-        Organization existOrganization = this.organizationService.getById(dto.getOrganizationId());
+        Organization existOrganization = this.organizationService.getById(dto   .getOrganizationId());
 
         Member member = Member.builder()
                 .name(dto.getName())
                 .urlPicture("urlPicture")
                 .pictureName("picture.jpg")
                 .position(dto.getPosition())
+                .reportsTo(dto.getReportsTo())
                 .organization(existOrganization)
                 .build();
 
