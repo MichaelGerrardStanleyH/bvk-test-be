@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: bvk-test-be
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=bvk;encrypt=true;trustServerCertificate=true;
+    username: sa
+    password: admin
+    platform: mssql
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
