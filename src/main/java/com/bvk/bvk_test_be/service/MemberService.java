@@ -58,6 +58,12 @@ public class MemberService {
         return existMember;
     }
 
+    public List<Member> getAllByNameContains(String name){
+        List<Member> byNameContains = this.memberRepository.findByNameContains(name);
+
+        return byNameContains;
+    }
+
     public Optional<Member> getReportsToById(Long id){
         return this.memberRepository.findById(id);
     }

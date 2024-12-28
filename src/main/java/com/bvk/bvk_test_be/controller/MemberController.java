@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -84,6 +85,16 @@ public class MemberController {
         this.memberService.delete(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{name}/search")
+    public ResponseEntity<?> getMemberById(@PathVariable("name") String name){
+
+        List<Member> allByNameContains = this.memberService.getAllByNameContains(name);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                TransactionMapper.mapEntityListToDtoList(allByNameContains, MemberResponseDTO.class)
+        );
     }
 
 }
