@@ -14,10 +14,6 @@ public class MemberRequestDTO {
 
     private String name;
 
-    private String urlPicture;
-
-    private String pictureName;
-
     private String position;
 
     private Long reportsToId;

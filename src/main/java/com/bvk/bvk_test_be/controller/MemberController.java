@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -46,17 +47,23 @@ public class MemberController {
     public ResponseEntity<?> createMemberWithForm(
             @RequestParam("name") String name,
             @RequestParam("position") String position,
-            @RequestParam("reportsToId") Long reportsToId,
+            @RequestParam(value = "reportsToId", required = false) Long reportsToId,
             @RequestParam("image") MultipartFile image
             ) throws IOException {
 
         MemberRequestDTO dto = MemberRequestDTO.builder()
                 .name(name)
                 .position(position)
-                .reportsToId(reportsToId)
                 .image(image)
                 .organizationId(1L)
                 .build();
+
+        if(!Objects.isNull(reportsToId)){
+            dto.setReportsToId(reportsToId);
+        }
+
+
+
 
         Member member = this.memberService.create(dto);
 

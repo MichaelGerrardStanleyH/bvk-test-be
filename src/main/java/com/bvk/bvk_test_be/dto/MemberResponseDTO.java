@@ -15,10 +15,6 @@ public class MemberResponseDTO {
 
     private String name;
 
-    private String urlPicture;
-
-    private String pictureName;
-
     private String position;
 
     private byte[] imageData;

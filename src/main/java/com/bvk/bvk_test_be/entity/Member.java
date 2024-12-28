@@ -19,9 +19,9 @@ public class Member {
 
     private String name;
 
-    private String urlPicture;
+    private String email;
 
-    private String pictureName;
+    private String password;
 
     @Lob
     @Column(name = "imagedata",length = 1000)

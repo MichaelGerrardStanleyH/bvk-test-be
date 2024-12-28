@@ -29,7 +29,7 @@ public class MemberService {
     }
 
     public Member create(MemberRequestDTO dto) throws IOException {
-        Organization existOrganization = this.organizationService.getById(dto   .getOrganizationId());
+        Organization existOrganization = this.organizationService.getById(dto.getOrganizationId());
 
 
 
@@ -37,8 +37,6 @@ public class MemberService {
 
         Member member = Member.builder()
                 .name(dto.getName())
-                .urlPicture("urlPicture")
-                .pictureName("picture.jpg")
                 .position(dto.getPosition())
                 .organization(existOrganization)
                 .imageData(dto.getImage().getBytes())
@@ -71,8 +69,6 @@ public class MemberService {
 
         existMember.setName(dto.getName());
         existMember.setPosition(dto.getPosition());
-        existMember.setUrlPicture(dto.getUrlPicture());
-        existMember.setPictureName(dto.getPictureName());
         existMember.setOrganization(existOrganization);
 
         if(!Objects.isNull(dto.getReportsToId())){

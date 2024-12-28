@@ -9,10 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReportsToResponseDTO {
-    private Long id;
-
-    private String name;
-
-    private String position;
+public class SignUpResponseDTO {
+    private int status;
+    private Long userId;
 }

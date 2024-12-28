@@ -36,12 +36,10 @@ public class OrganizationController {
         Organization organization = this.organizationService.getById(id);
 
         List<MemberResponseDTO> list = organization.getMembers().stream().map(member -> new MemberResponseDTO(
-                member.getId(), member.getName(), member.getUrlPicture(), member.getPictureName(), member.getPosition(), member.getImageData(),
+                member.getId(), member.getName(), member.getPosition(), member.getImageData(),
                 new ReportsToResponseDTO(
                         member.getReportsTo().getId(),
                         member.getReportsTo().getName(),
-                        member.getReportsTo().getUrlPicture(),
-                        member.getReportsTo().getPictureName(),
                         member.getReportsTo().getPosition()
                 )
         )).toList();

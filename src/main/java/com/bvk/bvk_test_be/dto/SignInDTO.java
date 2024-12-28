@@ -9,10 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReportsToResponseDTO {
-    private Long id;
+public class SignInDTO {
 
-    private String name;
+    private String email;
 
-    private String position;
+    private String password;
 }
+
+
