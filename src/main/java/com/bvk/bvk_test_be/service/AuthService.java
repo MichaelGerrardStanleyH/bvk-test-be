@@ -35,8 +35,6 @@ public class AuthService {
 
         Organization existOrganization = this.organizationService.getById(dto.getOrganizationId());
 
-        Member existReportsTo = this.memberService.getById(dto.getReportsTo());
-
         Member member = Member.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
@@ -44,8 +42,12 @@ public class AuthService {
                 .password(dto.getPassword())
                 .imageData(dto.getImage().getBytes())
                 .organization(existOrganization)
-                .reportsTo(existReportsTo)
                 .build();
+
+        if(!Objects.isNull(dto.getReportsTo())){
+            Member reportsTo = this.memberService.getById(dto.getReportsTo());
+            member.setReportsTo(reportsTo);
+        }
 
         this.memberRepository.save(member);
     }
