@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberResponseDTO {
-
+public class ReportsToResponseDTO {
     private Long id;
 
     private String name;
@@ -20,9 +19,4 @@ public class MemberResponseDTO {
     private String pictureName;
 
     private String position;
-
-    private byte[] imageData;
-
-    private ReportsToResponseDTO reportsTo;
-
 }

@@ -4,12 +4,16 @@ import com.bvk.bvk_test_be.dto.MemberRequestDTO;
 import com.bvk.bvk_test_be.entity.Member;
 import com.bvk.bvk_test_be.entity.Organization;
 import com.bvk.bvk_test_be.repository.MemberRepository;
+import com.bvk.bvk_test_be.util.ImageUtils;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -24,17 +28,26 @@ public class MemberService {
         return this.memberRepository.findAll();
     }
 
-    public Member create(MemberRequestDTO dto){
+    public Member create(MemberRequestDTO dto) throws IOException {
         Organization existOrganization = this.organizationService.getById(dto   .getOrganizationId());
+
+
+
+
 
         Member member = Member.builder()
                 .name(dto.getName())
                 .urlPicture("urlPicture")
                 .pictureName("picture.jpg")
                 .position(dto.getPosition())
-                .reportsTo(dto.getReportsTo())
                 .organization(existOrganization)
+                .imageData(dto.getImage().getBytes())
                 .build();
+
+        if(!Objects.isNull(dto.getReportsToId())){
+            Member reportsTo = this.getById(dto.getReportsToId());
+            member.setReportsTo(reportsTo);
+        }
 
         return this.memberRepository.save(member);
     }
@@ -47,6 +60,10 @@ public class MemberService {
         return existMember;
     }
 
+    public Optional<Member> getReportsToById(Long id){
+        return this.memberRepository.findById(id);
+    }
+
     public Member update(Long id, MemberRequestDTO dto){
         Member existMember = this.getById(id);
 
@@ -56,8 +73,12 @@ public class MemberService {
         existMember.setPosition(dto.getPosition());
         existMember.setUrlPicture(dto.getUrlPicture());
         existMember.setPictureName(dto.getPictureName());
-        existMember.setReportsTo(dto.getReportsTo());
         existMember.setOrganization(existOrganization);
+
+        if(!Objects.isNull(dto.getReportsToId())){
+            Member reportsTo = this.getById(dto.getReportsToId());
+            existMember.setReportsTo(reportsTo);
+        }
 
         return this.memberRepository.save(existMember);
     }

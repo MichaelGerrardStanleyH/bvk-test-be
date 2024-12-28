@@ -23,9 +23,14 @@ public class Member {
 
     private String pictureName;
 
+    @Lob
+    @Column(name = "imagedata",length = 1000)
+    private byte[] imageData;
+
     private String position;
 
-    private String reportsTo;
+    @ManyToOne
+    private Member reportsTo;
 
     @ManyToOne
     @JoinColumn(name = "organizationId")

@@ -2,14 +2,18 @@ package com.bvk.bvk_test_be.controller;
 
 import com.bvk.bvk_test_be.dto.MemberRequestDTO;
 import com.bvk.bvk_test_be.dto.MemberResponseDTO;
+import com.bvk.bvk_test_be.entity.Member;
 import com.bvk.bvk_test_be.mapper.TransactionMapper;
 import com.bvk.bvk_test_be.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/members")
 public class MemberController {
@@ -32,9 +36,32 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createMember(@RequestBody MemberRequestDTO dto){
+    public ResponseEntity<?> createMember(@RequestBody MemberRequestDTO dto) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 TransactionMapper.mapEntityToDto(this.memberService.create(dto), MemberResponseDTO.class)
+        );
+    }
+
+    @PostMapping(value = "/form")
+    public ResponseEntity<?> createMemberWithForm(
+            @RequestParam("name") String name,
+            @RequestParam("position") String position,
+            @RequestParam("reportsToId") Long reportsToId,
+            @RequestParam("image") MultipartFile image
+            ) throws IOException {
+
+        MemberRequestDTO dto = MemberRequestDTO.builder()
+                .name(name)
+                .position(position)
+                .reportsToId(reportsToId)
+                .image(image)
+                .organizationId(1L)
+                .build();
+
+        Member member = this.memberService.create(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                TransactionMapper.mapEntityToDto(member, MemberResponseDTO.class)
         );
     }
 

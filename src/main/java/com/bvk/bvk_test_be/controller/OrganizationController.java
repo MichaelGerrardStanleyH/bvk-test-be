@@ -1,7 +1,7 @@
 package com.bvk.bvk_test_be.controller;
 
-import com.bvk.bvk_test_be.dto.OrganizationRequestDTO;
-import com.bvk.bvk_test_be.dto.OrganizationResponseDTO;
+import com.bvk.bvk_test_be.dto.*;
+import com.bvk.bvk_test_be.entity.Organization;
 import com.bvk.bvk_test_be.mapper.TransactionMapper;
 import com.bvk.bvk_test_be.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("organizations")
 public class OrganizationController {
@@ -21,7 +22,8 @@ public class OrganizationController {
 
     @GetMapping
     public ResponseEntity<?> getAllOrganization(){
-        List<OrganizationResponseDTO> organizationResponseDTOS = TransactionMapper.mapEntityListToDtoList(this.organizationService.get(), OrganizationResponseDTO.class);
+        List<Organization> organizations = this.organizationService.get();
+        List<OrganizationResponseDTO> organizationResponseDTOS = TransactionMapper.mapEntityListToDtoList(organizations, OrganizationResponseDTO.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                organizationResponseDTOS
@@ -30,8 +32,26 @@ public class OrganizationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrganizationById(@PathVariable("id") Long id){
+
+        Organization organization = this.organizationService.getById(id);
+
+        List<MemberResponseDTO> list = organization.getMembers().stream().map(member -> new MemberResponseDTO(
+                member.getId(), member.getName(), member.getUrlPicture(), member.getPictureName(), member.getPosition(), member.getImageData(),
+                new ReportsToResponseDTO(
+                        member.getReportsTo().getId(),
+                        member.getReportsTo().getName(),
+                        member.getReportsTo().getUrlPicture(),
+                        member.getReportsTo().getPictureName(),
+                        member.getReportsTo().getPosition()
+                )
+        )).toList();
+
+        OrganizationResponseDTO organizationResponseDTO = new OrganizationResponseDTO(
+                organization.getId(), organization.getName(), list
+        );
+
         return ResponseEntity.status(HttpStatus.OK).body(
-                TransactionMapper.mapEntityToDto(this.organizationService.getById(id), OrganizationResponseDTO.class)
+                organizationResponseDTO
         );
     }
 
