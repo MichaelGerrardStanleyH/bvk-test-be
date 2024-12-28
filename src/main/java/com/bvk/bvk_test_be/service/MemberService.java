@@ -31,10 +31,6 @@ public class MemberService {
     public Member create(MemberRequestDTO dto) throws IOException {
         Organization existOrganization = this.organizationService.getById(dto.getOrganizationId());
 
-
-
-
-
         Member member = Member.builder()
                 .name(dto.getName())
                 .position(dto.getPosition())
